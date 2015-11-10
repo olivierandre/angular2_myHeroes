@@ -1,0 +1,30 @@
+<h2>{{ title }}</h2>
+
+<div *ng-if="new && selected === 0" class="form-group">
+    <label for="name">Nom du héros sélectionné</label>
+    <input class="form-control" id="name" placeholder="name" [(ng-model)]="hero.name" type="test">
+</div>
+
+<div *ng-if="selected > 0" class="form-group">
+    <label for="name">Modification du nom du héros sélectionné</label>
+    <input class="form-control" id="name" placeholder="name" [(ng-model)]="hero.name" type="test">
+</div>
+
+<button *ng-if="!new" (click)="newHero()" type="button" class="btn btn-primary">Ajouter un héros</button>
+<button (click)="addHero()" *ng-if="new" [ng-class]="{disabled: hero.name.length === 0}" ng type="button" class="btn btn-primary">Valider</button>
+<button (click)="deselect()" *ng-if="selected > 0" ng type="button" class="btn btn-warning">Déselectionner</button>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Heroes</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr (click)="onSelect(hero)" *ng-for="#hero of heroes" [ng-class]="{success: hero.id === selected}">
+            <th>{{ hero.id }}</th>
+            <td>{{ hero.name }}</td>
+        </tr>
+    </tbody>
+</table>
