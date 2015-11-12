@@ -18,12 +18,14 @@
     <thead>
         <tr>
             <th>#</th>
+            <th>id</th>
             <th>Heroes</th>
         </tr>
     </thead>
     <tbody>
-        <tr (click)="onSelect(hero)" *ng-for="#hero of heroes" [ng-class]="{success: hero.id === selected}">
-            <th>{{ hero.id }}</th>
+        <tr (click)="onSelect(hero)" *ng-for="#hero of heroes #i=index " [ng-class]="{success: hero.id === selected}">
+            <th>{{ i + 1 }}</th>
+            <td>{{ hero._id }}</td>
             <td>{{ hero.name }}</td>
         </tr>
     </tbody>

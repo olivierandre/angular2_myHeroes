@@ -8,26 +8,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var angular2_1 = require('angular2/angular2');
+var http_1 = require('angular2/http');
 var AppComponent = (function () {
-    function AppComponent() {
-        this.title = 'My Heroes';
+    function AppComponent(http) {
+        var _this = this;
         this.heroes = [
-            { "id": 11, "name": "Mr. Nice" },
-            { "id": 12, "name": "Narco" },
-            { "id": 13, "name": "Bombasto" },
-            { "id": 14, "name": "Celeritas" },
-            { "id": 15, "name": "Magneta" },
-            { "id": 16, "name": "RubberMan" },
-            { "id": 17, "name": "Dynama" },
-            { "id": 18, "name": "Dr IQ" },
-            { "id": 19, "name": "Magma" },
-            { "id": 20, "name": "Tornado" }
+            { "_id": 11, "name": "Mr. Nice" },
+            { "_id": 12, "name": "Narco" },
+            { "_id": 13, "name": "Bombasto" },
+            { "_id": 14, "name": "Celeritas" },
+            { "_id": 15, "name": "Magneta" },
+            { "_id": 16, "name": "RubberMan" },
+            { "_id": 17, "name": "Dynama" },
+            { "_id": 18, "name": "Dr IQ" },
+            { "_id": 19, "name": "Magma" },
+            { "_id": 20, "name": "Tornado" }
         ].sort(this.compare);
+        this.title = 'My Heroes';
         this.selected = 0;
+        http.get('/heroes')
+            .map(function (res) { return res.json(); })
+            .subscribe(function (docs) {
+            var heroes = docs.heroes;
+            for (var index = 0; index < heroes.length; index++) {
+                _this.heroes.push(heroes[index]);
+            }
+        });
     }
     AppComponent.prototype.onSelect = function (hero) {
         this.hero = hero;
-        this.selected = hero.id;
+        this.selected = hero._id;
     };
     AppComponent.prototype.compare = function (a, b) {
         if (a.id < b.id)
@@ -38,7 +48,7 @@ var AppComponent = (function () {
     };
     AppComponent.prototype.newHero = function () {
         this.hero = {
-            id: this.maxId(),
+            _id: this.maxId(),
             name: ''
         };
         this.new = true;
@@ -50,7 +60,7 @@ var AppComponent = (function () {
     };
     AppComponent.prototype.maxId = function () {
         return Math.max.apply(Math, this.heroes.map(function (hero) {
-            return hero.id + 1;
+            return hero._id + 1;
         }));
     };
     AppComponent.prototype.deselect = function () {
@@ -60,9 +70,10 @@ var AppComponent = (function () {
         angular2_1.Component({
             selector: 'app',
             templateUrl: 'views/hero.html',
-            directives: [angular2_1.FORM_DIRECTIVES, angular2_1.CORE_DIRECTIVES]
+            directives: [angular2_1.FORM_DIRECTIVES, angular2_1.CORE_DIRECTIVES],
+            viewProviders: [http_1.HTTP_PROVIDERS]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [http_1.Http])
     ], AppComponent);
     return AppComponent;
 })();
