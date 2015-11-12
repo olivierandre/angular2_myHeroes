@@ -4,8 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"tsc": "tsc -p src -w",
-		"start": "live-server"
+		"tsc": "tsc -p src -w"
 	},
 	"keywords": [],
 	"author": "",
