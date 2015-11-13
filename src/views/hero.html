@@ -10,9 +10,9 @@
     <input class="form-control" id="name" placeholder="name" [(ng-model)]="hero.name" type="test">
 </div>
 
-<button *ng-if="!new" (click)="newHero()" type="button" class="btn btn-primary">Ajouter un héros</button>
-<button (click)="addHero()" *ng-if="new" [ng-class]="{disabled: hero.name.length === 0}" ng type="button" class="btn btn-primary">Valider</button>
-<button (click)="deselect()" *ng-if="selected > 0" ng type="button" class="btn btn-warning">Déselectionner</button>
+<button *ng-if="!new && !modify" (click)="newHero()" type="button" class="btn btn-primary">Ajouter un héros</button>
+<button (click)="addHero()" *ng-if="new" [ng-class]="{disabled: hero.name.length === 0}" type="button" class="btn btn-primary">Valider</button>
+<button (click)="deselect()" *ng-if="selected > 0" type="button" class="btn btn-warning">Déselectionner</button>
 
 <table class="table table-striped table-hover">
     <thead>
@@ -20,13 +20,22 @@
             <th>#</th>
             <th>id</th>
             <th>Heroes</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        <tr (click)="onSelect(hero)" *ng-for="#hero of heroes #i=index " [ng-class]="{success: hero.id === selected}">
+        <tr *ng-for="#hero of heroes #i=index" [ng-class]="{success: hero._id === selected}">
             <th>{{ i + 1 }}</th>
             <td>{{ hero._id }}</td>
             <td>{{ hero.name }}</td>
+            <td>
+                <button (click)="onSelect(hero)" type="button" class="btn btn-warning">Modifier</button>
+                <button (click)="deleteHero(hero)" type="button" class="btn btn-danger">Supprimer</button>
+            </td>
         </tr>
     </tbody>
 </table>
+
+<!-- <ul *ng-for="#demo of getAllHeroes()">
+    <li>{{ demo.name }}</li>
+</ul> -->

@@ -1,49 +1,38 @@
 import {Component, bootstrap, FORM_DIRECTIVES, CORE_DIRECTIVES} from 'angular2/angular2';
-import {Http, HTTP_PROVIDERS} from 'angular2/http';
+import {HTTP_PROVIDERS} from 'angular2/http';
+import {HeroService} from './heroService';
 
 @Component({
     selector: 'app',
     templateUrl: 'views/hero.html',
     directives: [FORM_DIRECTIVES, CORE_DIRECTIVES],
-    viewProviders: [HTTP_PROVIDERS]
+    providers: [HeroService],
+    bindings: [HeroService]
 })
-class AppComponent {
-    public heroes: Hero[] = [
-        { "_id": 11, "name": "Mr. Nice" },
-        { "_id": 12, "name": "Narco" },
-        { "_id": 13, "name": "Bombasto" },
-        { "_id": 14, "name": "Celeritas" },
-        { "_id": 15, "name": "Magneta" },
-        { "_id": 16, "name": "RubberMan" },
-        { "_id": 17, "name": "Dynama" },
-        { "_id": 18, "name": "Dr IQ" },
-        { "_id": 19, "name": "Magma" },
-        { "_id": 20, "name": "Tornado" }
-    ].sort(this.compare);
 
-    constructor(http: Http) {
-        http.get('/heroes')
-            .map(res => res.json())
-            .subscribe(docs => {
-                var heroes = docs.heroes
-                for (var index = 0; index < heroes.length; index++) {
-                    this.heroes.push(heroes[index]);
-                }
-            }
-        )
+class AppComponent {
+    constructor(heroService: HeroService) {
+        this.heroService = heroService;
+        this.heroService.getAllHeroes().subscribe(result =>
+            this.heroes = result.heroes);
     }
+
+    public heroService: HeroService;
+
+    public heroes: Hero[] = [
+    ].sort(this.compare);
 
     public title = 'My Heroes'
     public hero: Hero;
 
-
     public selected: number = 0;
     public new: boolean;
-
+    public modify: boolean;
 
     onSelect(hero: Hero) {
         this.hero = hero;
-        this.selected = hero._id;
+        this.selected = parseInt(hero._id);
+        this.new = false;
     }
 
     compare(a, b) {
@@ -54,7 +43,7 @@ class AppComponent {
         return 0;
     }
 
-    newHero(): any {
+    newHero() {
         this.hero = {
             _id: this.maxId(),
             name: ''
@@ -63,21 +52,32 @@ class AppComponent {
         this.selected = 0;
     }
 
-    addHero(): any {
-        this.heroes.push(this.hero)
+    addHero() {
         this.new = false;
+        this.heroService.saveHero(this.hero).subscribe(result =>
+            this.heroes.push(result));
     }
 
-    maxId(): any {
+    maxId() {
         return Math.max.apply(Math, this.heroes.map(function(hero) {
             return hero._id + 1;
         }))
     }
 
-    deselect(): any {
+    deselect() {
         this.selected = 0;
+    }
+
+    deleteHero(hero) {
+        var index = this.heroes.indexOf(hero);
+        this.heroService.deleteHero(hero._id).subscribe(result =>
+            this.heroes.splice(index, 1));
+    };
+
+    modifyHero() {
+
     }
 
 }
 
-bootstrap(AppComponent);
+bootstrap(AppComponent, [HTTP_PROVIDERS, HeroService]);

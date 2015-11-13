@@ -1,6 +1,17 @@
 var express = require('express'),
 	app = express(),
-	mongoose = require('mongoose');
+	mongoose = require('mongoose'),
+	bodyParser = require('body-parser'),
+	methodOverride = require('method-override');
+
+app.use(bodyParser.urlencoded({
+	'extended': 'true'
+}));
+app.use(bodyParser.json());
+app.use(bodyParser.json({
+	type: 'application/vnd.api+json'
+}));
+app.use(methodOverride('X-HTTP-Method-Override'));
 
 mongoose.connect('mongodb://localhost/heroes');
 
@@ -8,13 +19,6 @@ var heroSchema = mongoose.Schema({
 	name: 'string'
 });
 var Hero = mongoose.model('heroes', heroSchema);
-
-// var newHero = new Hero({
-// 	name: 'Batman'
-// });
-// newHero.save(function(err, hero) {
-// 	console.log(hero);
-// });
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -36,6 +40,32 @@ app.get('/heroes', function(req, res) {
 		res.json({
 			heroes: heroes
 		});
+	});
+});
+
+app.post('/heroes', function(req, res) {
+	var hero = new Hero();
+	hero.name = req.body.name;
+
+	hero.save(function(err, newHero) {
+		if (err) {
+			return console.log(err);
+		}
+		res.send(newHero);
+	});
+});
+
+app.delete('/heroes/:id', function(req, res) {
+	Hero.find({
+		_id: req.params.id
+	}, function(err) {
+		if (err) {
+			return res.send(err);
+		}
+
+	}).remove().exec();
+	res.json({
+		"response": "ok"
 	});
 
 });
