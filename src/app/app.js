@@ -67,6 +67,10 @@ var AppComponent = (function () {
     };
     ;
     AppComponent.prototype.modifyHero = function () {
+        this.heroService.updateHero(this.hero).subscribe(function (result) {
+            console.log(result);
+        });
+        this.deselect();
     };
     AppComponent = __decorate([
         angular2_1.Component({

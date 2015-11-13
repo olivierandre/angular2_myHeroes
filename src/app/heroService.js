@@ -28,6 +28,11 @@ var HeroService = (function () {
         })
             .map(function (res) { return res.json(); });
     };
+    HeroService.prototype.updateHero = function (hero) {
+        return this.http.put('/heroes', JSON.stringify(hero), {
+            headers: this.headers
+        }).map(function (res) { return res.json(); });
+    };
     HeroService.prototype.deleteHero = function (id) {
         var url = '/heroes/' + id;
         return this.http.delete(url, {

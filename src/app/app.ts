@@ -75,7 +75,10 @@ class AppComponent {
     };
 
     modifyHero() {
-
+        this.heroService.updateHero(this.hero).subscribe(result => {
+            console.log(result);
+        })
+        this.deselect();
     }
 
 }

@@ -26,6 +26,12 @@ export class HeroService {
             .map(res => res.json());
     }
 
+    updateHero(hero) {
+        return this.http.put('/heroes', JSON.stringify(hero), {
+            headers: this.headers
+        }).map(res => res.json());
+    }
+
     deleteHero(id) {
         var url = '/heroes/' + id;
         return this.http.delete(url,  {

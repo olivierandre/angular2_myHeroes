@@ -29,25 +29,25 @@ app.use(express.static(__dirname + '/src'));
 // views is directory for all template files
 app.set('views', __dirname + '/views');
 
-app.get('/', function(request, response) {
+app.get('/', function (request, response) {
 	response.render('index');
 });
-app.get('/heroes', function(req, res) {
+app.get('/heroes', function (req, res) {
 	var heroes = [];
 	var promise = Hero.find();
 
-	promise.then(function(heroes) {
+	promise.then(function (heroes) {
 		res.json({
 			heroes: heroes
 		});
 	});
 });
 
-app.post('/heroes', function(req, res) {
+app.post('/heroes', function (req, res) {
 	var hero = new Hero();
 	hero.name = req.body.name;
 
-	hero.save(function(err, newHero) {
+	hero.save(function (err, newHero) {
 		if (err) {
 			return console.log(err);
 		}
@@ -55,10 +55,24 @@ app.post('/heroes', function(req, res) {
 	});
 });
 
-app.delete('/heroes/:id', function(req, res) {
+app.put('/heroes', function (req, res) {
+	var id = req.body._id;
+
+	Hero.findByIdAndUpdate(id, {
+		$set: req.body
+	}, {
+        //  Options : renvoi la MAJ
+		new: true
+	}, function (err, newHero) {
+		if (err) return handleError(err);
+		res.send(newHero);
+	});
+});
+
+app.delete('/heroes/:id', function (req, res) {
 	Hero.find({
 		_id: req.params.id
-	}, function(err) {
+	}, function (err) {
 		if (err) {
 			return res.send(err);
 		}
@@ -70,6 +84,6 @@ app.delete('/heroes/:id', function(req, res) {
 
 });
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
 	console.log('Node app is running on port', app.get('port'));
 });
