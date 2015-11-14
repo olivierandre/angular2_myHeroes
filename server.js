@@ -12,7 +12,7 @@ app.use(bodyParser.json({
 	type: 'application/vnd.api+json'
 }));
 app.use(methodOverride('X-HTTP-Method-Override'));
-
+console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'dev') {
 	mongoose.connect('mongodb://localhost/heroes');
 } else {
