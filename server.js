@@ -13,7 +13,12 @@ app.use(bodyParser.json({
 }));
 app.use(methodOverride('X-HTTP-Method-Override'));
 
-mongoose.connect('mongodb://localhost/heroes');
+if (process.env.NODE_ENV && process.env.NODE_ENV === 'dev') {
+	mongoose.connect('mongodb://localhost/heroes');
+} else {
+	mongoose.connect(process.env.MONGOLAB_URI);
+}
+
 
 var heroSchema = mongoose.Schema({
 	name: 'string'
@@ -61,7 +66,7 @@ app.put('/heroes', function (req, res) {
 	Hero.findByIdAndUpdate(id, {
 		$set: req.body
 	}, {
-        //  Options : renvoi la MAJ
+		//  Options : renvoi la MAJ
 		new: true
 	}, function (err, newHero) {
 		if (err) return handleError(err);
