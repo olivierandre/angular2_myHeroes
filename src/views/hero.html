@@ -2,43 +2,68 @@
     <h2>{{ title }}</h2>
     <small class="text-muted">Build with Angular2, MongoDB, Bootstrap 4. Deploy on Heroku</small>
 </div>
-<div style="margin-bottom: 20px">
-    <fieldset *ng-if="new && selected === 0" class="form-group">
-        <label for="name">Name of the new hero</label>
-        <input [(ng-model)]="hero.name" class="form-control" id="name" placeholder="name" type="test">
-    </fieldset>
+<div style="margin-bottom: 20px" *ng-if="new && selected === 0" >
+    <form name="addHero">
+        <fieldset class="form-group">
+            <label for="name">Name of the new hero</label>
+            <input [(ng-model)]="hero.name" class="form-control" id="name" placeholder="Name" type="text">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="editor">Editor of the new hero</label>
+            <input [(ng-model)]="hero.editor" class="form-control" id="editor" placeholder="Editor" type="text">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="description">Description of the new hero</label>
+            <input [(ng-model)]="hero.description" class="form-control" id="description" placeholder="Description" type="textarea">
+        </fieldset>
 
-    <fieldset *ng-if="selected > 0" class="form-group">
-        <label for="name">Changing the name of the selected hero</label>
-        <input [(ng-model)]="hero.name" class="form-control" id="name" placeholder="name" type="test">
 
-    </fieldset>
+        <button (click)="addHero()" *ng-if="new" [ng-class]="{disabled: hero.name.length === 0}" class="btn btn-success-outline" type="submit">Submit</button>
+    </form>
+</div>
+<div style="margin-bottom: 20px" *ng-if="selected > 0">
+    <form name="modifyHero">
+        <fieldset  class="form-group">
+            <label for="name">Changing the name of the selected hero</label>
+            <input [(ng-model)]="hero.name" class="form-control" id="name" placeholder="name" type="text">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="editor">Changint the editor of the new hero</label>
+            <input [(ng-model)]="hero.editor" class="form-control" id="editor" placeholder="Editor" type="text">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="description">Changing the description of the new hero</label>
+            <input [(ng-model)]="hero.description" class="form-control" id="description" placeholder="Description" type="textarea">
+        </fieldset>
+        <button (click)="modifyHero()" *ng-if="selected > 0" [ng-class]="{disabled: hero.name.length === 0}" class="btn btn-success-outline" type="submit">Modify</button>
+        <button (click)="deselect()" *ng-if="selected > 0" class="btn btn-secondary" type="button">Uncheck</button>
+    </form>
 </div>
 
-<div style="margin-bottom: 20px">
-    <button (click)="newHero()" *ng-if="!new && selected === 0" class="btn btn-primary" type="button">Add a hero</button>
-    <button (click)="addHero()" *ng-if="new" [ng-class]="{disabled: hero.name.length === 0}" class="btn btn-primary" type="button">Submit</button>
-    <button (click)="modifyHero()" *ng-if="selected > 0" [ng-class]="{disabled: hero.name.length === 0}" class="btn btn-primary" type="button">Modify</button>
-    <button (click)="deselect()" *ng-if="selected > 0" class="btn btn-warning" type="button">Uncheck</button>
+
+<div style="margin-bottom: 20px" *ng-if="!new && selected === 0">
+    <button (click)="newHero()" class="btn btn-primary-outline" type="button">Add a hero</button>
 </div>
 
 <table class="table table-striped table-hover">
     <thead>
         <tr>
             <th>#</th>
-            <th>id</th>
             <th>Heroes</th>
+            <th>Editor</th>
+            <th>Description</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         <tr *ng-for="#hero of heroes #i=index" [ng-class]="{success: hero._id === selected}">
             <th>{{ i + 1 }}</th>
-            <td>{{ hero._id }}</td>
             <td>{{ hero.name }}</td>
+            <td>{{ hero.editor }}</td>
+            <td>{{ hero.description }}</td>
             <td>
-                <button (click)="onSelect(hero)" class="btn btn-warning" type="button">Modify</button>
-                <button (click)="deleteHero(hero)" class="btn btn-danger" type="button">Delete</button>
+                <button (click)="onSelect(hero)" class="btn btn-secondary" type="button">Modify</button>
+                <button (click)="deleteHero(hero)" class="btn btn-danger-outline" type="button">Delete</button>
             </td>
         </tr>
     </tbody>

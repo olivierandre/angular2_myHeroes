@@ -12,7 +12,7 @@ app.use(bodyParser.json({
 	type: 'application/vnd.api+json'
 }));
 app.use(methodOverride('X-HTTP-Method-Override'));
-console.log(process.env.NODE_ENV)
+
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'dev') {
 	mongoose.connect('mongodb://localhost/heroes');
 } else {
@@ -21,7 +21,9 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === 'dev') {
 
 
 var heroSchema = mongoose.Schema({
-	name: 'string'
+	name: 'string',
+    editor: 'string',
+    description: 'string'
 });
 var Hero = mongoose.model('heroes', heroSchema);
 
@@ -51,6 +53,8 @@ app.get('/heroes', function (req, res) {
 app.post('/heroes', function (req, res) {
 	var hero = new Hero();
 	hero.name = req.body.name;
+    hero.editor = req.body.editor;
+    hero.description = req.body.description;
 
 	hero.save(function (err, newHero) {
 		if (err) {

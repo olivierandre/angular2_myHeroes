@@ -1,0 +1,28 @@
+{
+  "name": "heroes",
+  "description": "angular2, bootstrap 4, nodejs, mongodb",
+  "main": "server.js",
+  "authors": [
+    "Olivier Andre <olivier.andre77@gmail.com>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "angular2",
+    "bootstrap4",
+    "nodejs",
+    "mongodb"
+  ],
+  "homepage": "http://my-heroes.herokuapp.com/",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "v4-dev"
+  }
+}

@@ -14,7 +14,8 @@ class AppComponent {
     constructor(heroService: HeroService) {
         this.heroService = heroService;
         this.heroService.getAllHeroes().subscribe(result =>
-            this.heroes = result.heroes);
+            this.heroes = result.heroes
+        );
     }
 
     public heroService: HeroService;
@@ -46,7 +47,9 @@ class AppComponent {
     newHero() {
         this.hero = {
             _id: this.maxId(),
-            name: ''
+            name: '',
+            editor: '',
+            description: ''
         };
         this.new = true;
         this.selected = 0;
