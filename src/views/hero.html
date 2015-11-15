@@ -14,7 +14,7 @@
         </fieldset>
         <fieldset class="form-group">
             <label for="description">Description of the new hero</label>
-            <input [(ng-model)]="hero.description" class="form-control" id="description" placeholder="Description" type="textarea">
+            <textarea [(ng-model)]="hero.description" class="form-control" id="description" placeholder="Description"></textarea>
         </fieldset>
 
 
@@ -28,12 +28,12 @@
             <input [(ng-model)]="hero.name" class="form-control" id="name" placeholder="name" type="text">
         </fieldset>
         <fieldset class="form-group">
-            <label for="editor">Changint the editor of the new hero</label>
+            <label for="editor">Changing the editor of the selected hero</label>
             <input [(ng-model)]="hero.editor" class="form-control" id="editor" placeholder="Editor" type="text">
         </fieldset>
         <fieldset class="form-group">
-            <label for="description">Changing the description of the new hero</label>
-            <input [(ng-model)]="hero.description" class="form-control" id="description" placeholder="Description" type="textarea">
+            <label for="description">Changing the description of the selected hero</label>
+            <textarea [(ng-model)]="hero.description" class="form-control" id="description" placeholder="Description"></textarea>
         </fieldset>
         <button (click)="modifyHero()" *ng-if="selected > 0" [ng-class]="{disabled: hero.name.length === 0}" class="btn btn-success-outline" type="submit">Modify</button>
         <button (click)="deselect()" *ng-if="selected > 0" class="btn btn-secondary" type="button">Uncheck</button>
