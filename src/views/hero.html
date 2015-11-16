@@ -17,7 +17,7 @@
             <textarea [(ng-model)]="hero.description" class="form-control" id="description" placeholder="Description"></textarea>
         </fieldset>
 
-        <button (click)="addHero()" *ng-if="new" [ng-class]="{disabled: hero.name.length === 0}" class="btn btn-success-outline" type="submit">Submit</button>
+        <button (click)="addHero()" *ng-if="new" [ng-class]="{disabled: hero.name.length === 0}" class="btn btn-success-outline" type="submit"><i class="fa fa-check"></i></button>
     </form>
 </div>
 <div *ng-if="selected > 0" style="margin-bottom: 20px">
@@ -34,13 +34,13 @@
             <label for="description">Changing the description of the selected hero</label>
             <textarea [(ng-model)]="hero.description" class="form-control" id="description" placeholder="Description"></textarea>
         </fieldset>
-        <button (click)="modifyHero()" *ng-if="selected > 0" [ng-class]="{disabled: hero.name.length === 0}" class="btn btn-success-outline" type="submit">Modify</button>
-        <button (click)="deselect()" *ng-if="selected > 0" class="btn btn-secondary" type="button">Uncheck</button>
+        <button (click)="modifyHero()" *ng-if="selected > 0" [ng-class]="{disabled: hero.name.length === 0}" class="btn btn-success-outline" type="submit"><i class="fa fa-check"></i></button>
+        <button (click)="deselect()" *ng-if="selected > 0" class="btn btn-secondary" type="button"><i class="fa fa-ban"></i></button>
     </form>
 </div>
 
 <div *ng-if="!new && selected === 0" style="margin-bottom: 20px">
-    <button (click)="newHero()" class="btn btn-primary-outline" type="button">Add a hero</button>
+    <button (click)="newHero()" class="btn btn-primary-outline" type="button"><i class="fa fa-plus"></i></button>
 </div>
 
 <div class="table-responsive" *ng-if="heroService.heroes.length > 0">
@@ -61,8 +61,8 @@
                 <td>{{ hero.editor }}</td>
                 <td>{{ hero.description }}</td>
                 <td>
-                    <button (click)="onSelect(hero)" class="btn btn-secondary btn-sm" type="button">Modify</button>
-                    <button (click)="deleteHero(hero)" class="btn btn-danger-outline btn-sm" type="button">Delete</button>
+                    <button (click)="onSelect(hero)" class="btn btn-secondary" type="button"><i class="fa fa-pencil"></i></button>
+                    <button (click)="deleteHero(hero)" class="btn btn-danger-outline" type="button"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>
         </tbody>
