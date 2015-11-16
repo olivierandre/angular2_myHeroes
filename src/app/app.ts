@@ -13,15 +13,12 @@ import {HeroService} from './heroService';
 class AppComponent {
     constructor(heroService: HeroService) {
         this.heroService = heroService;
-        this.heroService.getAllHeroes().subscribe(result =>
-            this.heroes = result.heroes
-        );
     }
 
     public heroService: HeroService;
 
-    public heroes: Hero[] = [
-    ].sort(this.compare);
+    // public heroes: Hero[] = [
+    // ].sort(this.compare);
 
     public title = 'My Heroes'
     public hero: Hero;
@@ -46,7 +43,7 @@ class AppComponent {
 
     newHero() {
         this.hero = {
-            _id: this.maxId(),
+            _id: '',
             name: '',
             editor: '',
             description: ''
@@ -57,30 +54,25 @@ class AppComponent {
 
     addHero() {
         this.new = false;
-        this.heroService.saveHero(this.hero).subscribe(result =>
-            this.heroes.push(result));
+        this.heroService.saveHero(this.hero);
     }
 
-    maxId() {
-        return Math.max.apply(Math, this.heroes.map(function(hero) {
-            return hero._id + 1;
-        }))
-    }
+    // maxId() {
+    //     return Math.max.apply(Math, this.heroes.map(function(hero) {
+    //         return hero._id + 1;
+    //     }))
+    // }
 
     deselect() {
         this.selected = 0;
     }
 
     deleteHero(hero) {
-        var index = this.heroes.indexOf(hero);
-        this.heroService.deleteHero(hero._id).subscribe(result =>
-            this.heroes.splice(index, 1));
+        this.heroService.deleteHero(hero);
     };
 
     modifyHero() {
-        this.heroService.updateHero(this.hero).subscribe(result => {
-            console.log(result);
-        })
+        this.heroService.updateHero(this.hero);
         this.deselect();
     }
 

@@ -17,28 +17,49 @@ var HeroService = (function () {
         this.heroes = [];
         this.headers = new http_1.Headers();
         this.headers.append('Content-Type', 'application/json');
+        this.getAllHeroes();
     }
     HeroService.prototype.getAllHeroes = function () {
+        var _this = this;
         return this.http.get('/heroes')
-            .map(function (res) { return res.json(); });
+            .map(function (res) { return res.json(); }).subscribe(function (response) { return _this.heroes = response.heroes; }, function (err) { return console.log(err); }, function () { return console.log('Get all heroes'); });
+    };
+    HeroService.prototype.setHeroes = function (heroes) {
+        this.heroes = heroes;
+    };
+    HeroService.prototype.getHeroes = function () {
+        return this.heroes;
     };
     HeroService.prototype.saveHero = function (hero) {
+        var _this = this;
         return this.http.post('/heroes', JSON.stringify(hero), {
             headers: this.headers
         })
-            .map(function (res) { return res.json(); });
+            .map(function (res) { return res.json(); }).subscribe(function (response) { return _this.heroes.push(response); }, function (err) { return console.log(err); }, function () { return console.log('add hero OK'); });
     };
     HeroService.prototype.updateHero = function (hero) {
+        var _this = this;
         return this.http.put('/heroes', JSON.stringify(hero), {
             headers: this.headers
-        }).map(function (res) { return res.json(); });
+        })
+            .map(function (res) { return res.json(); }).subscribe(function (response) {
+            var index = _this.heroes.indexOf(hero);
+            _this.heroes[index] = response;
+        }, function (err) { return console.log(err); }, function () { return console.log('Update ok'); });
     };
-    HeroService.prototype.deleteHero = function (id) {
-        var url = '/heroes/' + id;
+    HeroService.prototype.deleteHero = function (hero) {
+        var _this = this;
+        var url = '/heroes/' + hero._id;
+        var ok = false;
         return this.http.delete(url, {
             headers: this.headers
         })
-            .map(function (res) { return res.json(); });
+            .map(function (res) { return res.json(); }).subscribe(function (response) { return ok = response.response; }, function (err) { return console.log(err); }, function () {
+            if (ok) {
+                var index = _this.heroes.indexOf(hero);
+                _this.heroes.splice(index, 1);
+            }
+        });
     };
     HeroService = __decorate([
         core_1.Injectable(), 

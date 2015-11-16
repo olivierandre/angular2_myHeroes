@@ -1,8 +1,10 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
@@ -12,14 +14,11 @@ var http_1 = require('angular2/http');
 var heroService_1 = require('./heroService');
 var AppComponent = (function () {
     function AppComponent(heroService) {
-        var _this = this;
-        this.heroes = [].sort(this.compare);
+        // public heroes: Hero[] = [
+        // ].sort(this.compare);
         this.title = 'My Heroes';
         this.selected = 0;
         this.heroService = heroService;
-        this.heroService.getAllHeroes().subscribe(function (result) {
-            return _this.heroes = result.heroes;
-        });
     }
     AppComponent.prototype.onSelect = function (hero) {
         this.hero = hero;
@@ -35,7 +34,7 @@ var AppComponent = (function () {
     };
     AppComponent.prototype.newHero = function () {
         this.hero = {
-            _id: this.maxId(),
+            _id: '',
             name: '',
             editor: '',
             description: ''
@@ -44,32 +43,23 @@ var AppComponent = (function () {
         this.selected = 0;
     };
     AppComponent.prototype.addHero = function () {
-        var _this = this;
         this.new = false;
-        this.heroService.saveHero(this.hero).subscribe(function (result) {
-            return _this.heroes.push(result);
-        });
+        this.heroService.saveHero(this.hero);
     };
-    AppComponent.prototype.maxId = function () {
-        return Math.max.apply(Math, this.heroes.map(function (hero) {
-            return hero._id + 1;
-        }));
-    };
+    // maxId() {
+    //     return Math.max.apply(Math, this.heroes.map(function(hero) {
+    //         return hero._id + 1;
+    //     }))
+    // }
     AppComponent.prototype.deselect = function () {
         this.selected = 0;
     };
     AppComponent.prototype.deleteHero = function (hero) {
-        var _this = this;
-        var index = this.heroes.indexOf(hero);
-        this.heroService.deleteHero(hero._id).subscribe(function (result) {
-            return _this.heroes.splice(index, 1);
-        });
+        this.heroService.deleteHero(hero);
     };
     ;
     AppComponent.prototype.modifyHero = function () {
-        this.heroService.updateHero(this.hero).subscribe(function (result) {
-            console.log(result);
-        });
+        this.heroService.updateHero(this.hero);
         this.deselect();
     };
     AppComponent = __decorate([

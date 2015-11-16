@@ -2,7 +2,7 @@
     <h2>{{ title }}</h2>
     <small class="text-muted">Build with Angular2, MongoDB, Bootstrap 4. Deploy on Heroku</small>
 </div>
-<div style="margin-bottom: 20px" *ng-if="new && selected === 0" >
+<div *ng-if="new && selected === 0" style="margin-bottom: 20px">
     <form name="addHero">
         <fieldset class="form-group">
             <label for="name">Name of the new hero</label>
@@ -17,13 +17,12 @@
             <textarea [(ng-model)]="hero.description" class="form-control" id="description" placeholder="Description"></textarea>
         </fieldset>
 
-
         <button (click)="addHero()" *ng-if="new" [ng-class]="{disabled: hero.name.length === 0}" class="btn btn-success-outline" type="submit">Submit</button>
     </form>
 </div>
-<div style="margin-bottom: 20px" *ng-if="selected > 0">
+<div *ng-if="selected > 0" style="margin-bottom: 20px">
     <form name="modifyHero">
-        <fieldset  class="form-group">
+        <fieldset class="form-group">
             <label for="name">Changing the name of the selected hero</label>
             <input [(ng-model)]="hero.name" class="form-control" id="name" placeholder="name" type="text">
         </fieldset>
@@ -40,34 +39,35 @@
     </form>
 </div>
 
-
-<div style="margin-bottom: 20px" *ng-if="!new && selected === 0">
+<div *ng-if="!new && selected === 0" style="margin-bottom: 20px">
     <button (click)="newHero()" class="btn btn-primary-outline" type="button">Add a hero</button>
 </div>
 
-<table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Heroes</th>
-            <th>Editor</th>
-            <th>Description</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ng-for="#hero of heroes #i=index" [ng-class]="{success: hero._id === selected}">
-            <th>{{ i + 1 }}</th>
-            <td>{{ hero.name }}</td>
-            <td>{{ hero.editor }}</td>
-            <td>{{ hero.description }}</td>
-            <td>
-                <button (click)="onSelect(hero)" class="btn btn-secondary" type="button">Modify</button>
-                <button (click)="deleteHero(hero)" class="btn btn-danger-outline" type="button">Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-responsive" *ng-if="heroService.heroes.length > 0">
+    <table class="table table-striped table-hover">
+        <thead class="thead-inverse">
+            <tr>
+                <th>#</th>
+                <th>Heroes</th>
+                <th>Editor</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ng-for="#hero of heroService.heroes #i=index" [ng-class]="{success: hero._id === selected}">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ hero.name }}</td>
+                <td>{{ hero.editor }}</td>
+                <td>{{ hero.description }}</td>
+                <td>
+                    <button (click)="onSelect(hero)" class="btn btn-secondary btn-sm" type="button">Modify</button>
+                    <button (click)="deleteHero(hero)" class="btn btn-danger-outline btn-sm" type="button">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <!-- <ul *ng-for="#demo of getAllHeroes()">
     <li>{{ demo.name }}</li>
